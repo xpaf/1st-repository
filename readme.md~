@@ -1,1 +1,1 @@
-Coś szczeniackiego
+Coś szczeniackiego i coś głupiego
