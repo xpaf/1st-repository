@@ -1,64 +1,67 @@
 #!/usr/bin/env python3
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+import sys
 
-def get_data():
 
+def get_data():  # Funkcja
     try:
-        pl = input("Prosze podać nazwę pliku z danymi ")
-        plik = open(pl)
+        data_file_name = input("Prosze podać nazwę pliku z danymi ")
+        data_file = open(data_file_name)
+
     except:
         print("Błąd, zła nazwa pliku")
+        sys.exit(0)
 
     vector_x = []
     vector_y = []
 
     try:
-        plik.readline()
-        for linia in plik.readlines():
-            linia = linia.split()
-            vector_x.append(int(linia[0]))
-            vector_y.append(int(linia[1]))
+        for line in data_file.readlines():
+            line = line.split()
+            vector_x.append(float(line[0]))
+            vector_y.append(float(line[1]))
+
+        return vector_x, vector_y
     except:
-        print('Niewłaściwy format, prosze poprawić plik z danymi')
-    finally:
-        plik.close()
-
-    print(vector_x,vector_y)
-    #return(vector_x,vector_y)
+        print("Zły format pliku z danymi")
+        sys.exit(0)
 
 
-x = [1,5,7]
-y = [0,1,2]
-def get_average(vector): #Funkcja obliczająca średnią wektora
+def get_average(vector):
+    avg = sum(vector) / len(vector)
 
-    avg = sum(vector)/len(vector) #Obliczenie średniej polega na zsumowaniu danych przy pomocy wbudowanej fukcji
-                                    # sum() wektorze oraz podzieleniu ich przez długość wektora otrzymanej z wbudowanej funkcji len()
-    return avg                          #funkcja zwarca obliczoną średnią
+    return avg
 
-def get_product(vector1, vector2): #Fukcja obliczająca iloczyn mnożenia dwóch wektrów pobiera jako parametry dwa wektory
 
-    product = []                   #Utworzenie pustej listy do przechowywania kolejno obliczanych wyników operacji mnożenia wektorów
+def get_product(vector1, vector2):
+    product = []
 
-    for x in range(len(vector1)):   #Pętla iterująca przez elementy wektora1 na podstawie długości jednego z nich
-        product.append(vector1[x] * vector2[x]) #(oba wektory muszą mieć identyczną długość wiec bez różnicy długość którego wektora będzie obliczana)
-                                                    #dodawanie do listy wyniku mnożenia wektorów
+    for x in range(len(vector1)):
+        product.append(vector1[x] * vector2[x])
+
     return product
 
-def get_trendline(vector_x, vector_y):  #Główna funkcja obliczająca parametry linii trendu
-                                            #zmienne ułatwiające obliczanie linii trendu oraz poprawiające czytelność kodu
+
+def get_trendline(data):
+    vector_x = data[0]
+    vector_y = data[1]
     xy_vector = get_product(vector_x, vector_y)
     xx_vector = get_product(vector_x, vector_x)
     x_average = get_average(vector_x)
     y_average = get_average(vector_y)
     vector_length = len(vector_x)
 
-    a = (sum(xy_vector) - (vector_length * x_average * y_average))/(sum(xx_vector) - vector_length * (x_average) ** 2)
-    b = y_average - (a * x_average)
+    try:
+        a = (sum(xy_vector) - (vector_length * x_average * y_average)) / (
+            sum(xx_vector) - vector_length * x_average ** 2)
+        b = y_average - (a * x_average)
 
-    if b < 0:   #Rozrożnienie dodatniego i ujemnego parametru b w celu poprawnego wypisania wyniku
-        print("Obliczona funkcja liniowa ma wzór y = {:.2f}x {:.3f}".format(a, b))
-    else:
-        print("Obliczona funkcja liniowa ma wzór y = {:.2f}x + {:.3f}".format(a, b))
+        if b < 0:
+            print("Obliczona funkcja liniowa ma wzór y = {:.2f}x {:.3f}".format(a, b))
+        else:
+            print("Obliczona funkcja liniowa ma wzór y = {:.2f}x + {:.3f}".format(a, b))
+    except:
+        print("Dla tych danych nie można wyznaczyć linii trendu")
 
-get_data()
-get_trendline(x,y)
+
+get_trendline(get_data())
