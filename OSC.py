@@ -1,10 +1,35 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-#def get_vector():
+def get_data():
+
+    try:
+        pl = input("Prosze podać nazwę pliku z danymi ")
+        plik = open(pl)
+    except:
+        print("Błąd, zła nazwa pliku")
+
+    vector_x = []
+    vector_y = []
+
+    try:
+        plik.readline()
+        for linia in plik.readlines():
+            linia = linia.split()
+            vector_x.append(int(linia[0]))
+            vector_y.append(int(linia[1]))
+    except:
+        print('Niewłaściwy format, prosze poprawić plik z danymi')
+    finally:
+        plik.close()
+
+    print(vector_x,vector_y)
+    #return(vector_x,vector_y)
+
+
 x = [1,5,7]
 y = [0,1,2]
-def get_average(vector): #Funkcja obliczająca średnią wektora, pobiera jako parametr wektor
+def get_average(vector): #Funkcja obliczająca średnią wektora
 
     avg = sum(vector)/len(vector) #Obliczenie średniej polega na zsumowaniu danych przy pomocy wbudowanej fukcji
                                     # sum() wektorze oraz podzieleniu ich przez długość wektora otrzymanej z wbudowanej funkcji len()
@@ -35,5 +60,5 @@ def get_trendline(vector_x, vector_y):  #Główna funkcja obliczająca parametry
     else:
         print("Obliczona funkcja liniowa ma wzór y = {:.2f}x + {:.3f}".format(a, b))
 
-
+get_data()
 get_trendline(x,y)
