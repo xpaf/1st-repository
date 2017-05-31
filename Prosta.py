@@ -9,14 +9,13 @@ def get_data(data_file_name):
         data_file = open(data_file_name)
     except:
         print("Błąd, zła nazwa pliku")
-        sys.exit(0)
+        sys.exit(-1)
 
     vector_x = []
     vector_y = []
     # zabezpieczenie przed podaniem źle sformatowanego pliku
     try:
         for line in data_file.readlines():
-            # rozdzielenie danych
             line = line.split()
             vector_x.append(float(line[0]))
             vector_y.append(float(line[1]))
@@ -24,7 +23,7 @@ def get_data(data_file_name):
         return vector_x, vector_y
     except:
         print("Zły format pliku z danymi")
-        sys.exit(0)
+        sys.exit(-1)
 
 
 def get_average(vector):
@@ -45,7 +44,6 @@ def get_product(vector1, vector2):
 def get_trendline(data):
     vector_x = data[0]
     vector_y = data[1]
-    # dodatkowe zmienne zwiększające czytelność kodu, skracając wzór
     xy_vector = get_product(vector_x, vector_y)
     xx_vector = get_product(vector_x, vector_x)
     x_average = get_average(vector_x)
@@ -57,7 +55,7 @@ def get_trendline(data):
             sum(xx_vector) - vector_length * x_average ** 2)
         b = y_average - (a * x_average)
 
-        print("{:.3f}\n{:.3f}".format(a, b))
+        print("{:.3f}  {:.3f}".format(a, b))
     except:
         print("Dla tych danych nie można wyznaczyć linii trendu")
 
